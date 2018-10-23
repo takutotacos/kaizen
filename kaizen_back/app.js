@@ -27,11 +27,13 @@ app.use(logger('dev'));
 
 let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
-let labelRouter = require('./routes/label');
+let labelRouter = require('./routes/labels');
+let ticketRouter = require('./routes/tickets');
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-app.use('/labels', labelRouter);/**/
+app.use('/labels', labelRouter);
+app.use('/tickets', ticketRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

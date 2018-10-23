@@ -1,10 +1,10 @@
-let Label = require('../models/Label');
+let Labels = require('../models/Label');
 let express = require('express');
 let router = express.Router();
 
 /* GET label listing */
 router.get('/', (req, res) => {
-    Label.find((err, labels) => {
+    Labels.find((err, labels) => {
         if (err) {
             console.log('error fetching labels');
             labels = [];
@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 
 /* POST label creation*/
 router.post('/', (req, res) => {
-    let label = new Label({
+    let label = new Labels({
         name: req.body['name']
     });
 
