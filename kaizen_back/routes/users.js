@@ -4,11 +4,6 @@ let router = express.Router();
 const bcrypt = require('bcrypt');
 const saltRoudns = 10;
 
-/* GET users listing. */
-router.get('/', function(req, res, next) {
-    res.send("the logging");
-});
-
 /* POST user creation */
 router.post('/', (req, res) => {
     bcrypt.hash(req.body['password'], saltRoudns, (err, hash) => {
@@ -31,6 +26,17 @@ router.post('/', (req, res) => {
     });
 })
 
-/* PATCH user modification */
+router.post('/login', (req, response) => {
+    User.findOne({email: req.body['email']}, (err, user) => {
+        bcrypt.compare(req.body['password'], user.password, (err, res) => {
+            if (err || !res) {
+                return response.status(401).json({errors: 'Authentication Failed'});
+            }
+
+            return response.status(200).json(user);
+        })
+    })
+});
+
 
 module.exports = router;
