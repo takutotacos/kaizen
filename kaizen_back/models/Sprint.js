@@ -2,7 +2,6 @@ let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
 let Sprint = Schema({
-    _id: Schema.Types.ObjectId,
     name: String,
     start_date: Date,
     end_date: Date,

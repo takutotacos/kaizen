@@ -27,8 +27,6 @@ router.post('/', (req, res) => {
         labels: requestValue(req, 'label_id'),
         owner: requestValue(req, 'owner_id'),
     });
-    newTicket.title = requestValue(req, 'title');
-    newTicket.title = req.body['title'];
 
     let error = newTicket.validateSync();
     if (error != undefined) {
