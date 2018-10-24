@@ -25,14 +25,12 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(logger('dev'));
 
-let indexRouter = require('./routes/index');
 let usersRouter = require('./routes/users');
 let labelRouter = require('./routes/labels');
 let sprintRouter = require('./routes/sprints');
 let ticketRouter = require('./routes/tickets');
 let commentRouter = require('./routes/comments');
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/labels', labelRouter);
 app.use('/sprints', sprintRouter);
