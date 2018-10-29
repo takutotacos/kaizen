@@ -10,17 +10,17 @@ let Ticket = new Schema({
     time: Number,
     status: {
         type: String,
-        enum: ['Waiting', 'Work In Progress', 'Done'],
+        enum: ['waiting', 'wip', 'done'],
         required: true
     },
     importance: {
         type: String,
-        enum: ['Low', 'Medium', 'High'],
+        enum: ['low', 'medium', 'high'],
         required: true,
     },
     urgency: {
         type: String,
-        enum: ['Low', 'Medium', 'High'],
+      enum: ['low', 'medium', 'high'],
         required: true,
     },
     lasting_effect: String,
