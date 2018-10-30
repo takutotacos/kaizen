@@ -1,0 +1,19 @@
+.flex {
+  display: flex;
+
+  &.right {
+    justify-content: flex-end;
+  }
+
+  &.baseline {
+    align-items: baseline;
+  }
+
+  &.align-center {
+    align-items: center;
+  }
+
+  &.expanded {
+    flex: 1;
+  }
+}

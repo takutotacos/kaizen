@@ -1,0 +1,57 @@
+$small: 12px;
+$middle: 20px;
+$large: 28px;
+
+.margin-s {
+  margin: $small;
+}
+
+.margin-m {
+  margin: $middle;
+}
+
+.margin-l {
+  marign: $large;
+}
+
+.margin-tb-s {
+  margin-top: $small;
+  margin-bottom: $small;
+}
+
+.margin-tb-m {
+  margin-top: $middle;
+  margin-bottom: $middle;
+}
+
+.margin-tb-l {
+  margin-top: $large;
+  margin-bottom: $large;
+}
+
+.margin-rl-s {
+  margin-right: $small;
+  margin-left: $small;
+}
+
+.margin-rl-m {
+  margin-right: $middle;
+  margin-left: $middle;
+}
+
+.margin-rl-l {
+  margin-right: $large;
+  margin-left: $large;
+}
+
+.margin-l-s {
+  margin-left: $small;
+}
+
+.margin-l-m {
+  margin-left: $middle;
+}
+
+.margin-l-l {
+  margin-left: $large;
+}

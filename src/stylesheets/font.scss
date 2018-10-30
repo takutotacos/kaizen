@@ -1,0 +1,23 @@
+$small: 12px;
+$middle: 20px;
+$large: 28px;
+
+.font-large {
+  font-size: $large;
+}
+
+.font-middle {
+  font-size: $middle;
+}
+
+.font-small {
+  font-size: $small;
+}
+
+.font-bold {
+  font-weight: bold;
+}
+
+.font-red {
+  color: red;
+}
