@@ -1,7 +1,4 @@
-$xsmall: 4px;
-$small: 12px;
-$middle: 20px;
-$large: 28px;
+@import "constants";
 
 .padding-xs {
   padding: $xsmall;

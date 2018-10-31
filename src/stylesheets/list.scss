@@ -1,3 +1,5 @@
+@import "constants";
+
 .list-parent {
   background-color: navajowhite;
   list-style-type: none;
@@ -8,5 +10,5 @@
 }
 
 .list-item {
-  background-color: aqua;
+  background-color: $blue;
 }
