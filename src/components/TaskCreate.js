@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import TaskService from '../util/TaskService';
+let Redirect = require('react-router-dom').Redirect;
 
 const statusOptions = [
   {value: 'wip', label: 'Work In Progress'},
@@ -24,13 +25,15 @@ class TaskCreate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      id: '',
       title: '',
       description: '',
       time: '',
       status: '',
       importance: '',
       urgency: '',
-      existing: false
+      existing: false,
+      created: false
     }
     this.service = new TaskService();
 
@@ -41,6 +44,23 @@ class TaskCreate extends React.Component {
     this.handleChangeImportance = this.handleChangeImportance.bind(this);
     this.handleChangeUrgency = this.handleChangeUrgency.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  componentDidMount() {
+    let inheritedState = this.props.location.state;
+    if (!inheritedState) return;
+
+    this.setState({
+      id: inheritedState.id,
+      title: inheritedState.title,
+      description: inheritedState.description,
+      time: inheritedState.time,
+      status: inheritedState.status,
+      importance: inheritedState.importance,
+      urgency: inheritedState.urgency,
+      existing: true,
+      label_ids: inheritedState.label_ids
+    })
   }
 
   handleChangeTitle(event) {
@@ -81,28 +101,31 @@ class TaskCreate extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    this.service.create(
+    let id = this.state.existing ? '' : this.state.id;
+
+    this.service.updateOrCreate(
+      id,
       this.state.title,
       this.state.description,
       this.state.time,
       this.state.status['value'],
       this.state.importance['value'],
       this.state.urgency['value'],
-      this.handleSuccess,
-      this.handleError
-    );
-  }
-
-  handleSuccess() {
-    alert("success!");
-  }
-
-  handleError(err) {
-    alert("error");
-    console.log(err);
+    ).then(res => {
+      // todo some feedback
+      this.setState({
+        created: true
+      });
+    }).catch(error => {
+      alert(error);
+    })
   }
 
   render() {
+    if (this.state.created) {
+      return <Redirect to={'/tasks'}/>
+    }
+    console.log('rendering!!!!!!!!!!!!!');
     return (
       <div className={'container'}>
         <form onSubmit={this.handleSubmit}>
@@ -156,7 +179,7 @@ class TaskCreate extends React.Component {
         </form>
       </div>
     );
-}
+  }
 }
 
 export default TaskCreate;

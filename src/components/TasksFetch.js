@@ -7,10 +7,11 @@ import '../stylesheets/font.scss'
 
 let React = require('react');
 let PropTypes = require('prop-types');
+let Link = require('react-router-dom').Link;
 
 let TaskList= (props) => {
   return (
-    <ul className={'task-list list-parent padding-s'}>
+    <ul className={'task-list list-parent padding-xs'}>
       {props.tasks.map((task) => {
         return (
           <li className={'list-item margin-s padding-s flex'} key={task.id}>
@@ -23,22 +24,37 @@ let TaskList= (props) => {
                 </div>
 
                 <div className={'margin-rl-s'}>Status:
-                  <span className={'font-red margin-l-s'}>{task.status}</span>
+                  <span className={'font-red margin-l-s'}>{task.status['label']}</span>
                 </div>
 
                 <div className={'margin-rl-s'}>Importance:
-                  <span className={'font-red margin-l-s'}>{task.importance}</span>
+                  <span className={'font-red margin-l-s'}>{task.importance['label']}</span>
                 </div>
 
                 <div className={'margin-rl-s'}>Urgency:
-                  <span className={'font-red margin-l-s'}>{task.urgency}</span>
+                  <span className={'font-red margin-l-s'}>{task.urgency['label']}</span>
                 </div>
               </div>
             </div>
 
-            <button className={'btn btn-primary btn-lg'}>
-              Edit
-            </button>
+            <div className={'flex direction-column align-center'}>
+              <Link className={'btn btn-primary btn-sm'}
+                    to={{
+                      pathname: "/task/" + task.id,
+                      state: {
+                        id: task.id,
+                        title: task.title,
+                        description: task.description,
+                        time: task.time,
+                        status: task.status,
+                        importance: task.importance,
+                        urgency: task.urgency,
+                        label_ids: task.label_ids
+                      }
+                    }}>
+                Edit
+              </Link>
+            </div>
           </li>
         )})}
     </ul>
@@ -46,7 +62,7 @@ let TaskList= (props) => {
 }
 
 TaskList.protoTypes = {
-  tasks: PropTypes.array.isRequired
+  tasks: PropTypes.array.isRequired,
 }
 
 class TasksFetch extends React.Component {
@@ -66,7 +82,6 @@ class TasksFetch extends React.Component {
         })
       })
       .catch((msg) => {
-        console.log(msg);
         alert(msg);
       })
   }

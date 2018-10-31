@@ -8,7 +8,7 @@ import App from './App';
 import Nav from './components/Nav';
 import UserLogin from './components/UserLogin';
 import UserSignup from './components/UserSignup';
-import TaskRegister from './components/TaskCreate';
+import TaskCreate from './components/TaskCreate';
 import TasksFetch from './components/TasksFetch';
 
 ReactDOM.render(
@@ -21,7 +21,7 @@ ReactDOM.render(
       <Route exact path={'/user/login'} component={UserLogin}/>
 
       <Route exact path={'/tasks'} component={TasksFetch}/>
-      <Route exact path={'/tasks/create'} component={TaskRegister}/>
+      <Route exact path={"/task/:id?"} component={TaskCreate}/>
     </div>
   </Router>
   , document.getElementById('root')

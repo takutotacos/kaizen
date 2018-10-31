@@ -1,6 +1,11 @@
+$xsmall: 4px;
 $small: 12px;
 $middle: 20px;
 $large: 28px;
+
+.padding-xs {
+  padding: $xsmall;
+}
 
 .padding-s {
   padding: $small;
