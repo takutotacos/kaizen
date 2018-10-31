@@ -129,52 +129,46 @@ class TaskCreate extends React.Component {
     return (
       <div className={'container'}>
         <form onSubmit={this.handleSubmit}>
-          <div className={'margin-tb-s'}>
-            <label>Title:
+          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
+            <label>Title:</label>
               <input type={'text'} value={this.state.title} onChange={this.handleChangeTitle}
                      className={'form-control'}/>
-            </label>
           </div>
 
-          <div className={'margin-tb-s'}>
-            <label>Description:
+          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
+            <label>Description:</label>
               <textarea value={this.state.description} onChange={this.handleChangeDisc}
                      className={'form-control'}/>
-            </label>
           </div>
 
-          <div className={'margin-tb-s'}>
-            <label>Time Needed(Hour):
+          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
+            <label>Time Needed(Hour):</label>
               <input type={'number'} value={this.state.time} onChange={this.handleChangeTime}
                      className={'form-control'}/>
-            </label>
           </div>
 
-          <div className={'margin-tb-s'}>
-            <label>Status:
+          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
+            <label>Status:</label>
               <Select value={this.state.status}
                       onChange={this.handleChangeStatus}
                       options={statusOptions}/>
-            </label>
           </div>
 
-          <div className={'margin-tb-s'}>
-            <label>Importance:
+          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
+            <label>Importance:</label>
               <Select value={this.state.importance}
                       onChange={this.handleChangeImportance}
                       options={importanceOptions}/>
-            </label>
           </div>
 
-          <div className={'margin-tb-s'}>
-            <label>Urgency:
+          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
+            <label>Urgency:</label>
               <Select value={this.state.urgency}
                       onChange={this.handleChangeUrgency}
                       options={urgencyOptions}/>
-            </label>
           </div>
           <div>
-            <input type={'submit'} value={'Create'} className={'btn btn-primary'}/>
+            <input type={'submit'} value={'Create'} className={'btn btn-primary col-md-4 col-md-offset-4'}/>
           </div>
         </form>
       </div>

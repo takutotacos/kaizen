@@ -1,11 +1,12 @@
 import '../stylesheets/button.scss'
+import '../stylesheets/margin.scss'
 
 let React = require('react');
 let NavLink = require('react-router-dom').NavLink;
 
 let Nav = () => {
   return (
-    <div className={'flex'}>
+    <div className={'flex align-center margin-s'}>
       <NavLink exact activeClassName={'active'} to={'/'} className={'button'}>Home</NavLink>
       <NavLink exact activeClassName={'active'} to={'/task'} className={'margin-l-s button'}>New Task!</NavLink>
       <NavLink exact activeClassName={'active'} to={'/tasks'} className={'margin-l-s button'}>Tasks</NavLink>
