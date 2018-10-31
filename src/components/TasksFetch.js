@@ -13,25 +13,32 @@ let TaskList= (props) => {
     <ul className={'task-list list-parent padding-s'}>
       {props.tasks.map((task) => {
         return (
-          <li className={'list-item margin-s padding-s'} key={task.id}>
-            <p className={'font-bold font-large'}>{task.title}</p>
+          <li className={'list-item margin-s padding-s flex'} key={task.id}>
+            <div className={'flex direction-column expanded'}>
+              <p className={'font-bold font-large'}>{task.title}</p>
 
-            <div className={'flex'}>
-              <p>Time necessary:
-                <span className={'margin-l-s'}>{task.time}</span>
-              </p>
-              <div className={'margin-rl-s'}>Status:
-                <span className={'font-red margin-l-s'}>{task.status}</span>
-              </div>
+              <div className={'flex'}>
+                <div>Time necessary:
+                  <span className={'margin-l-s'}>{task.time}</span>
+                </div>
 
-              <div className={'margin-rl-s'}>Importance:
-                <span className={'font-red margin-l-s'}>{task.importance}</span>
-              </div>
+                <div className={'margin-rl-s'}>Status:
+                  <span className={'font-red margin-l-s'}>{task.status}</span>
+                </div>
 
-              <div className={'margin-rl-s'}>Urgency:
-                <span className={'font-red margin-l-s'}>{task.urgency}</span>
+                <div className={'margin-rl-s'}>Importance:
+                  <span className={'font-red margin-l-s'}>{task.importance}</span>
+                </div>
+
+                <div className={'margin-rl-s'}>Urgency:
+                  <span className={'font-red margin-l-s'}>{task.urgency}</span>
+                </div>
               </div>
             </div>
+
+            <button className={'btn btn-primary btn-lg'}>
+              Edit
+            </button>
           </li>
         )})}
     </ul>

@@ -1,6 +1,10 @@
 .flex {
   display: flex;
 
+  &.direction-column {
+    flex-direction: column;
+  }
+
   &.right {
     justify-content: flex-end;
   }

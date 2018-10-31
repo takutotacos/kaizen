@@ -1,10 +1,12 @@
 .list-parent {
-  background-color: coral;
+  background-color: navajowhite;
   list-style-type: none;
   margin-left: 0px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
 }
 
 .list-item {
   background-color: aqua;
-  border-radius: 20px;
 }
