@@ -1,6 +1,4 @@
-$small: 12px;
-$middle: 20px;
-$large: 28px;
+@import "constants";
 
 .font-large {
   font-size: $large;

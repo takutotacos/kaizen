@@ -1,9 +1,9 @@
 import TaskService from "../util/TaskService";
-import '../stylesheets/flex.scss'
-import '../stylesheets/list.scss'
-import '../stylesheets/margin.scss'
-import '../stylesheets/padding.scss'
-import '../stylesheets/font.scss'
+import '../stylesheets/common/flex.scss'
+import '../stylesheets/common/list.scss'
+import '../stylesheets/common/margin.scss'
+import '../stylesheets/common/padding.scss'
+import '../stylesheets/common/font.scss'
 
 let React = require('react');
 let PropTypes = require('prop-types');
