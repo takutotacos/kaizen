@@ -1,0 +1,47 @@
+/*
+Error: Invalid CSS after "...: left;: center": expected "{", was ";"
+        on line 10 of button.scss
+
+5:   border-radius: 16px;
+6:   padding: 2px 10px;
+7:   font-size: 14px;
+8:   font-weight: bold;
+9:   background-color: $green;
+10:   text-align: left;: center;
+11: }
+
+Backtrace:
+button.scss:10
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:1278:in `expected'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:1208:in `expected'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:1203:in `tok!'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:677:in `block'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:747:in `declaration_or_ruleset'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:697:in `block_child'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:689:in `block_contents'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:678:in `block'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:670:in `ruleset'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:696:in `block_child'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:689:in `block_contents'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:137:in `stylesheet'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:41:in `parse'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/engine.rb:414:in `_to_tree'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/engine.rb:389:in `_render_with_sourcemap'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/engine.rb:307:in `render_with_sourcemap'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:462:in `update_stylesheet'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:215:in `block in update_stylesheets'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `each'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin/compiler.rb:209:in `update_stylesheets'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/plugin.rb:82:in `update_stylesheets'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:338:in `watch_or_update'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:51:in `process_result'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/base.rb:50:in `parse'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/base.rb:18:in `parse!'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/lib/ruby/gems/2.4.0/gems/sass-3.5.7/bin/scss:13:in `<top (required)>'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/bin/scss:23:in `load'
+/Users/sugitatakuto/.rbenv/versions/2.4.2/bin/scss:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"...: left;: center\": expected \"{\", was \";\"\A         on line 10 of button.scss\A \A 5:   border-radius: 16px;\A 6:   padding: 2px 10px;\A 7:   font-size: 14px;\A 8:   font-weight: bold;\A 9:   background-color: $green;\A 10:   text-align: left;: center;\A 11: }"; }

@@ -8,7 +8,9 @@
     "node-sass": "^4.9.4",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
+    "react-balloon": "^0.2.5",
     "react-dom": "^16.5.2",
+    "react-modal": "^3.6.1",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
     "react-select": "^2.1.1"
