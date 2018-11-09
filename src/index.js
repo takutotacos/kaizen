@@ -11,7 +11,6 @@ import UserSignup from './components/UserSignup';
 import TaskCreate from './components/TaskCreate';
 import TasksFetch from './components/TasksFetch';
 import Calendar from './components/Calendar';
-import GoalSetting from './components/GoalSetting';
 
 ReactDOM.render(
   <Router>
@@ -26,8 +25,6 @@ ReactDOM.render(
       <Route exact path={"/task/:id?"} component={TaskCreate}/>
 
       <Route exact path={'/calendar'} component={Calendar}/>
-      <Route exact path={'/calendar/goal/w/:numbers'} component={GoalSetting}/>
-
     </div>
   </Router>
   , document.getElementById('root')

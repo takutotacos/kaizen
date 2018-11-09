@@ -11,4 +11,7 @@
 .list-item {
   background-color: aqua; }
 
+.scroll-vertical {
+  overflow-y: scroll; }
+
 /*# sourceMappingURL=list.css.map */

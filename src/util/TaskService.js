@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const domain = 'http://localhost:4200';
+let domain = require('./Common').domain;
 
 class TaskService {
   fetchAll() {

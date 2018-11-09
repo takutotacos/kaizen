@@ -6,6 +6,11 @@ import '../stylesheets/calendar.scss';
 import '../stylesheets/common/flex.scss'
 import '../stylesheets/common/font.scss'
 import '../stylesheets/common/margin.scss'
+import '../stylesheets/common/list.scss'
+
+import GoalService from '../util/GoalService';
+
+let weekString = require('../util/DateUtil').weekString;
 
 const customStyles = {
   content: {
@@ -72,12 +77,32 @@ CustomModal.propTypes = {
 };
 
 class Calendar extends React.Component {
-  state = {
-    currentMonth: new Date(),
-    selectedDate: new Date(),
-    isModalOpen: false,
-    goalSpan: ''
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentMonth: new Date(),
+      selectedDate: new Date(),
+      month: dateFns.format(new Date(), 'MM'),
+      year: dateFns.format(new Date(), 'YYYY'),
+      isModalOpen: false,
+      content_goal_week: '',
+      weekly_goals: {}
+    };
+
+    this.service = new GoalService()
+  }
+
+  componentDidMount() {
+    this.service.getWeeklyForMonth(this.state.year, this.state.month)
+      .then((res) => {
+        this.setState({
+          weekly_goals: res
+        })
+      })
+      .catch((err) => {
+        console.log('error occurred');
+      })
+  }
 
   renderHeader() {
     const dateFormat = "MMMM YYYY";
@@ -164,12 +189,28 @@ class Calendar extends React.Component {
         day = dateFns.addDays(day, 1);
       }
       const weekClone = week;
+
+      let goals = [];
+      if (this.state.weekly_goals[week] !== undefined) {
+        goals.push(<ul key={week}>
+            {this.state.weekly_goals[week].forEach((e) => {
+              goals.push(
+                <li key={e._id}>
+                  {e.content}
+                </li>
+              );
+            })};
+          </ul>
+        );
+      }
+
       days.push(
-        <div className={'col goal cell'}
+        <div className={'col goal cell scroll-vertical'}
              key={`week_${week}`}
              onClick={() => this.onGoalClick(weekClone)}
         >
-          {`week ${week}`}
+          <span className={'number'}>{`week ${week}`}</span>
+          {goals}
         </div>
       );
 
@@ -208,7 +249,7 @@ class Calendar extends React.Component {
     console.log('week is ' + w);
     this.setState({
       isModalOpen: true,
-      goalSpan: w
+      content_goal_week: w
     })
   };
 
@@ -219,28 +260,17 @@ class Calendar extends React.Component {
   }
 
   onGoalSubmit = (goal) => {
-    this.setState({
-      isModalOpen: false
-    });
-    console.log(goal);
-  }
+    this.service
+      .postGoalWeekly(this.state.year, this.state.month, this.state.content_goal_week, goal )
+      .then((res) => {
 
-  weekString = (week) => {
-    let weekNo = '';
-    switch (week) {
-      case 1:
-        weekNo = '1st';
-        break;
-      case 2:
-        weekNo = '2nd';
-        break;
-      case 3:
-        weekNo = '3rd';
-        break;
-      default:
-        weekNo = `${week}th`;
-    }
-    return `${weekNo} week`;
+        this.setState({
+          isModalOpen: false
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -252,7 +282,7 @@ class Calendar extends React.Component {
         <CustomModal
           modalIsOpen={this.state.isModalOpen}
           onRequestClose={this.onRequestClose}
-          title={dateFns.format(this.state.currentMonth, 'MMMM') + ' ' + this.weekString(this.state.goalSpan)}
+          title={dateFns.format(this.state.currentMonth, 'MMMM') + ' ' + weekString(this.state.content_goal_week)}
           onSubmitGoal={(v) => this.onGoalSubmit(v)}
         />
       </div>
