@@ -128,10 +128,13 @@ class Calendar extends React.Component {
       if (weekly_goals[week] !== undefined &&
         weekly_goals[week].length !== 0) {
         weekly_goals[week].forEach((g) => {
+          let classForSpan = 'margin-l-s font-small font-bold';
+          classForSpan += g.completed ? ' text-strike-through' : '';
+
           goals.push(
             <div key={g._id} className={'margin-b-s'}>
               <Checkbox checked={g.completed} name={g._id} onChange={(event) => this.onGoalItemClick(g, event)}/>
-              <span className={'margin-l-s font-small font-bold'}>{g.content}</span>
+              <span className={classForSpan}>{g.content}</span>
             </div>
           );
         });

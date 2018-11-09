@@ -1,0 +1,14 @@
+.flex {
+  display: flex; }
+  .flex.direction-column {
+    flex-direction: column; }
+  .flex.right {
+    justify-content: flex-end; }
+  .flex.baseline {
+    align-items: baseline; }
+  .flex.align-center {
+    justify-content: center; }
+  .flex.expanded {
+    flex: 1; }
+
+/*# sourceMappingURL=flex.css.map */
