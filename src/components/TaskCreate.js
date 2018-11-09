@@ -125,7 +125,7 @@ class TaskCreate extends React.Component {
     if (this.state.created) {
       return <Redirect to={'/tasks'}/>
     }
-    console.log('rendering!!!!!!!!!!!!!');
+
     return (
       <div className={'container'}>
         <form onSubmit={this.handleSubmit}>

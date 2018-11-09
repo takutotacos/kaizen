@@ -10,6 +10,7 @@ import UserLogin from './components/UserLogin';
 import UserSignup from './components/UserSignup';
 import TaskCreate from './components/TaskCreate';
 import TasksFetch from './components/TasksFetch';
+import Calendar from './components/Calendar';
 
 ReactDOM.render(
   <Router>
@@ -22,6 +23,8 @@ ReactDOM.render(
 
       <Route exact path={'/tasks'} component={TasksFetch}/>
       <Route exact path={"/task/:id?"} component={TaskCreate}/>
+
+      <Route exact path={'/calendar'} component={Calendar}/>
     </div>
   </Router>
   , document.getElementById('root')

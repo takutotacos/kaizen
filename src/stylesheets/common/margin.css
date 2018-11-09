@@ -1,0 +1,54 @@
+/* size */
+/* color */
+.margin-s {
+  margin: 12px; }
+
+.margin-m {
+  margin: 20px; }
+
+.margin-l {
+  marign: 28px; }
+
+.margin-tb-s {
+  margin-top: 12px;
+  margin-bottom: 12px; }
+
+.margin-tb-m {
+  margin-top: 20px;
+  margin-bottom: 20px; }
+
+.margin-tb-l {
+  margin-top: 28px;
+  margin-bottom: 28px; }
+
+.margin-rl-s {
+  margin-right: 12px;
+  margin-left: 12px; }
+
+.margin-rl-m {
+  margin-right: 20px;
+  margin-left: 20px; }
+
+.margin-rl-l {
+  margin-right: 28px;
+  margin-left: 28px; }
+
+.margin-l-s {
+  margin-left: 12px; }
+
+.margin-l-m {
+  margin-left: 20px; }
+
+.margin-l-l {
+  margin-left: 28px; }
+
+.margin-b-s {
+  margin-bottom: 12px; }
+
+.margin-b-m {
+  margin-bottom: 20px; }
+
+.margin-b-l {
+  margin-bottom: 28px; }
+
+/*# sourceMappingURL=margin.css.map */
