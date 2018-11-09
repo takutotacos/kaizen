@@ -1,5 +1,3 @@
-/* size */
-/* color */
 .font-large {
   font-size: 28px; }
 
@@ -14,8 +12,5 @@
 
 .font-red {
   color: red; }
-
-.text-strike-through {
-  text-decoration: line-through; }
 
 /*# sourceMappingURL=font.css.map */

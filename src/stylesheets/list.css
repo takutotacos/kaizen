@@ -1,0 +1,14 @@
+/* size */
+/* color */
+.list-parent {
+  background-color: navajowhite;
+  list-style-type: none;
+  margin-left: 0px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px; }
+
+.list-item {
+  background-color: aqua; }
+
+/*# sourceMappingURL=list.css.map */
