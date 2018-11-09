@@ -33,7 +33,7 @@ class GoalService {
 
   patchGoalWeekly(goal_id, content, is_completed) {
     let params = {
-      is_completed: is_completed
+      completed: is_completed
     };
     return axios.patch(domain + `goal_weekly/${goal_id}`, params)
       .then((res) => {

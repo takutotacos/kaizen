@@ -1,80 +1,14 @@
 import React from 'react';
 import dateFns from 'date-fns';
-import Modal from 'react-modal';
-import PropTypes from 'prop-types';
-import '../stylesheets/calendar.scss';
 import '../stylesheets/common/flex.scss'
 import '../stylesheets/common/font.scss'
 import '../stylesheets/common/margin.scss'
 import '../stylesheets/common/list.scss'
-
 import GoalService from '../util/GoalService';
+import CustomModal from './CustomModal';
+import Checkbox from "./Checkbox";
 
 let weekString = require('../util/DateUtil').weekString;
-
-const customStyles = {
-  content: {
-    top: '40%',
-    left: '40%',
-    right: 'auto',
-    bottom: 'auto',
-    margin: '10%',
-    transform: 'translate(-50%, -50%)',
-    color: '#111',
-    backgroundColor: 'aqua'
-  }
-};
-
-Modal.setAppElement('#root');
-class CustomModal extends React.Component {
-  state = {
-    goal: ''
-  };
-
-  handleChangeGoal = (event) => {
-    event.preventDefault();
-    this.setState({
-      goal: event.target.value
-    })
-  }
-
-  onSubmit = () => {
-    this.props.onSubmitGoal(this.state.goal);
-    this.setState({
-      goal: ''
-    })
-  }
-
-  render() {
-    return (
-      <div>
-        <Modal
-          isOpen={this.props.modalIsOpen}
-          onRequestClose={this.props.onRequestClose}
-          style={customStyles}
-          contentLabel={"Example Modal"}>
-
-          <div className={'flex align-center-vertical'}>
-            <div className={'font-middle font-bold'}>{this.props.title}</div>
-            <a className={'margin-l-s'} href={'#'} onClick={this.props.onRequestClose}>close</a>
-          </div>
-          <form>
-            <div className={'font-small font-bold'}>What is your goal?</div>
-            <input type={'text'} size={50} value={this.state.goal} onChange={this.handleChangeGoal}/>
-            <div className={'margin-l-s btn btn-primary btn-sm'} onClick={this.onSubmit}>submit</div>
-          </form>
-        </Modal>
-      </div>
-    )
-  }
-}
-
-CustomModal.propTypes = {
-  modalIsOpen: PropTypes.bool.isRequired,
-  onRequestClose: PropTypes.func.isRequired,
-  title: PropTypes.string.isRequired,
-  onSubmitGoal: PropTypes.func.isRequired
-};
 
 class Calendar extends React.Component {
   constructor(props) {
@@ -154,7 +88,7 @@ class Calendar extends React.Component {
   }
 
   renderCells() {
-    const {currentMonth, selectedDate} = this.state;
+    const {currentMonth, selectedDate, weekly_goals} = this.state;
     const monthStart = dateFns.startOfMonth(currentMonth);
     const monthEnd = dateFns.endOfMonth(currentMonth);
     const startDate = dateFns.startOfWeek(monthStart);
@@ -191,26 +125,25 @@ class Calendar extends React.Component {
       const weekClone = week;
 
       let goals = [];
-      if (this.state.weekly_goals[week] !== undefined) {
-        goals.push(<ul key={week}>
-            {this.state.weekly_goals[week].forEach((e) => {
-              goals.push(
-                <li key={e._id}>
-                  {e.content}
-                </li>
-              );
-            })};
-          </ul>
-        );
+      if (weekly_goals[week] !== undefined &&
+        weekly_goals[week].length !== 0) {
+        weekly_goals[week].forEach((g) => {
+          goals.push(
+            <div key={g._id} className={'margin-b-s'}>
+              <Checkbox checked={g.completed} name={g._id} onChange={(event) => this.onGoalItemClick(g, event)}/>
+              <span className={'margin-l-s font-small font-bold'}>{g.content}</span>
+            </div>
+          );
+        });
       }
 
       days.push(
         <div className={'col goal cell scroll-vertical'}
              key={`week_${week}`}
-             onClick={() => this.onGoalClick(weekClone)}
         >
           <span className={'number'}>{`week ${week}`}</span>
           {goals}
+          <a className={'font-small font-bold'} href={'#'} onClick={() => this.onGoalClick(weekClone)}>Add goal</a>
         </div>
       );
 
@@ -246,7 +179,7 @@ class Calendar extends React.Component {
   };
 
   onGoalClick = (w) => {
-    console.log('week is ' + w);
+    console.log('goal clicked');
     this.setState({
       isModalOpen: true,
       content_goal_week: w
@@ -263,14 +196,38 @@ class Calendar extends React.Component {
     this.service
       .postGoalWeekly(this.state.year, this.state.month, this.state.content_goal_week, goal )
       .then((res) => {
+        let modified_goals = this.state.weekly_goals;
+        modified_goals[res.data.week].push(res.data);
 
         this.setState({
-          isModalOpen: false
+          isModalOpen: false,
+          weekly_goals: modified_goals,
         });
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  onGoalItemClick = (goal, e) => {
+    this.service.patchGoalWeekly(goal._id, goal.content, !goal.completed)
+      .then((res) => {
+        let goals = this.state.weekly_goals;
+        let updatedGoal = res.data;
+
+        for (let i = 0; i < goals[updatedGoal.week].length; i++) {
+          if (goals[updatedGoal.week][i]._id === updatedGoal._id) {
+            goals[updatedGoal.week][i] = updatedGoal;
+          }
+        }
+
+        this.setState({
+          weekly_goals: goals
+        })
+      })
+      .catch((e) => {
+        console.log('failed patching');
+      })
   };
 
   render() {
@@ -289,6 +246,5 @@ class Calendar extends React.Component {
     );
   }
 }
-
 
 export default Calendar;
