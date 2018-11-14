@@ -4,7 +4,7 @@ let domain = require('./Common').domain;
 
 class UserService {
   signUp(name, email, password, funcSuccess, funcFailure) {
-    axios.post(domain + '/users', {
+    axios.post(domain + 'users', {
       name: name,
       email: email,
       password: password
@@ -21,7 +21,7 @@ class UserService {
   }
 
   login(email, password, funcSuccess, funcFailure) {
-    axios.post(domain + '/users/login', {
+    axios.post(domain + 'users/login', {
       email: email,
       password: password
     })

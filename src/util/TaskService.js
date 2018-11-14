@@ -4,7 +4,7 @@ let domain = require('./Common').domain;
 
 class TaskService {
   fetchAll() {
-    return axios.get(domain + '/tickets')
+    return axios.get(domain + 'tickets')
       .then((res) => {
         return res.data.map((item) => {
 
@@ -77,7 +77,7 @@ class TaskService {
       params['id'] = id;
     }
 
-    return axios.post(domain + '/tickets', params)
+    return axios.post(domain + 'tickets', params)
     .then((res) => {
       return res;
     })
