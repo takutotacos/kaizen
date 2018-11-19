@@ -4,6 +4,7 @@ let domain = require('./Common').domain;
 
 class TaskService {
   fetchAll() {
+    console.log("communicating to " + domain);
     return axios.get(domain + 'tickets')
       .then((res) => {
         return res.data.map((item) => {

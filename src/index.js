@@ -14,7 +14,7 @@ import Calendar from './components/Calendar';
 
 ReactDOM.render(
   <Router>
-    <div className={'container'}>
+    <div>
       <Nav/>
 
       <Route exact path={'/'} component={App}/>
