@@ -11,6 +11,7 @@ import UserSignup from './components/UserSignup';
 import TaskCreate from './components/TaskCreate';
 import TasksFetch from './components/TasksFetch';
 import Calendar from './components/Calendar';
+import {PrivateRoute} from "./components/PrivateRoute";
 
 ReactDOM.render(
   <Router>
@@ -21,10 +22,10 @@ ReactDOM.render(
       <Route exact path={'/user'} component={UserSignup}/>
       <Route exact path={'/user/login'} component={UserLogin}/>
 
-      <Route exact path={'/tasks'} component={TasksFetch}/>
-      <Route exact path={"/task/:id?"} component={TaskCreate}/>
+      <PrivateRoute exact path={'/tasks'} component={TasksFetch}/>
+      <PrivateRoute exact path={"/task/:id?"} component={TaskCreate}/>
 
-      <Route exact path={'/calendar'} component={Calendar}/>
+      <PrivateRoute exact path={'/calendar'} component={Calendar}/>
     </div>
   </Router>
   , document.getElementById('root')
