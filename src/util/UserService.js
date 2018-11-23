@@ -26,10 +26,11 @@ class UserService {
       password: password
     })
       .then((res) => {
-        console.log('the user signup was successful');
+        console.log('the user login was successful');
         if (res.data) {
           let user = {
-            authdata: window.btoa(res.data.name + ';' + res.data.password)
+            authdata: window.btoa(res.data.user.name + ':' + res.data.user.password),
+            name: res.data.user.name
           };
           localStorage.setItem('user', JSON.stringify(user));
           return res.data;
