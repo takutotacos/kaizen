@@ -20,6 +20,10 @@ class UserService {
       });
   }
 
+  logout() {
+    localStorage.removeItem('user');
+  }
+
   login(email, password) {
     return axios.post(domain + 'users/login', {
       email: email,
@@ -35,10 +39,6 @@ class UserService {
           localStorage.setItem('user', JSON.stringify(user));
           return res.data;
         }
-      })
-      .catch((error) => {
-        console.log('the error occured during user login');
-        return error;
       });
   }
 }

@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-import App from './App';
+import Home from './components/Home';
 import Nav from './components/Nav';
 import UserLogin from './components/UserLogin';
 import UserSignup from './components/UserSignup';
@@ -18,7 +18,7 @@ ReactDOM.render(
     <div>
       <Nav/>
 
-      <Route exact path={'/'} component={App}/>
+      <Route exact path={'/'} component={Home}/>
       <Route exact path={'/user'} component={UserSignup}/>
       <Route exact path={'/user/login'} component={UserLogin}/>
 

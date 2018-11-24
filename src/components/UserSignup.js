@@ -42,6 +42,10 @@ class UserSignup extends Component {
 
   handleSuccess() {
     alert('Success')
+    this.props.history.push({
+      pathname: '/',
+      state: {action: 'action-info', text: 'Successfully signed up.'}
+    });
   }
 
   handleFailure() {

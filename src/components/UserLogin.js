@@ -9,6 +9,8 @@ class UserLogin extends Component {
       password: '',
       should_alert_email_empty: false,
       should_alert_password_empty: false,
+      error: false,
+      errorMessage: ''
     }
     this.service = new UserService();
 
@@ -30,10 +32,16 @@ class UserLogin extends Component {
 
     this.service.login(this.state.email, this.state.password)
       .then(data => {
-        const {from} = this.props.location.state || {from: {pathname: '/'}}
-        this.props.history.push(from);
+        this.props.history.push({
+          pathname: '/',
+          state: {action: 'alert-info', text: 'Successfully logged in.'}
+        });
       })
       .catch(error => {
+        this.setState({
+          error: true,
+          errorMessage: 'Email/Password pair does not match'
+        });
         alert('login failed');
       })
   }
@@ -57,6 +65,11 @@ class UserLogin extends Component {
     return (
       <div className={'container'}>
         <p>Welcome back!</p>
+
+        {this.state.error && <div className={`alert alert-danger`}>
+          {this.state.errorMessage}
+        </div>}
+
         <form onSubmit={this.handleSubmit}>
           <div className={'margin-tb-s'}>
             <label>
