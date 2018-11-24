@@ -33,7 +33,7 @@ class UserService {
         console.log('the user login was successful');
         if (res.data) {
           let user = {
-            authdata: window.btoa(res.data.user.name + ':' + res.data.user.password),
+            authdata: window.btoa(res.data.user.email + ':' + res.data.user.password),
             name: res.data.user.name
           };
           localStorage.setItem('user', JSON.stringify(user));
