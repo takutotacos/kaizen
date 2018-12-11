@@ -11,8 +11,9 @@ let NavLink = require('react-router-dom').NavLink;
 let logout = () => {
   let service = new UserService();
   service.logout();
+
   this.props.history.push('/');
-}
+};
 
 let Nav = () => {
   let user = JSON.parse(localStorage.getItem('user'));

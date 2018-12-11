@@ -11,7 +11,6 @@ class Home extends Component {
     }
   }
   componentDidMount() {
-    console.log(this.props.location);
     if (this.props.location.state) {
       let states = this.props.location.state;
 
@@ -19,6 +18,11 @@ class Home extends Component {
         action: states.action,
         actionText: states.text
       });
+
+      // reset the history
+      this.props.history.push({
+        state: {action: '', text: ''}
+      })
     }
   }
 

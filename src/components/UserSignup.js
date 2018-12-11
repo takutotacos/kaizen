@@ -33,23 +33,17 @@ class UserSignup extends Component {
       return;
     }
 
-    this.service.signUp(this.state.name,
-      this.state.email,
-      this.state.password,
-      this.handleSuccess,
-      this.handleFailure);
-  }
-
-  handleSuccess() {
-    alert('Success')
-    this.props.history.push({
-      pathname: '/',
-      state: {action: 'action-info', text: 'Successfully signed up.'}
-    });
-  }
-
-  handleFailure() {
-    alert('something went wrong');
+    this.service.signUp(this.state.name, this.state.email, this.state.password)
+      .then(res => {
+        this.props.history.push({
+          pathname: '/',
+          state: {action: 'action-info', text: 'Successfully signed up.'}
+        })
+      })
+      .catch(err => {
+        console.log(err);
+          alert('something went wrong');
+      })
   }
 
   alertNecessaryFields() {

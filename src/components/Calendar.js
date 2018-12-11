@@ -163,10 +163,11 @@ class Calendar extends React.Component {
     return <div className={'body'}>{rows}</div>
   }
 
-  onDateClick = day => {
-    this.setState({
-      selectedDate: day
-    })
+  onDateClick = (date) => {
+    let year = dateFns.format(date, 'YYYY');
+    let month = dateFns.format(date, 'MM');
+    let day = dateFns.format(date, 'DD');
+    this.props.history.push(`/schedule/${year}/${month}/${day}`);
   };
 
   nextMonth = () => {
@@ -182,7 +183,6 @@ class Calendar extends React.Component {
   };
 
   onGoalClick = (w) => {
-    console.log('goal clicked');
     this.setState({
       isModalOpen: true,
       content_goal_week: w
