@@ -12,6 +12,7 @@ import TaskCreate from './components/TaskCreate';
 import TasksFetch from './components/TasksFetch';
 import Calendar from './components/Calendar';
 import {PrivateRoute} from "./components/PrivateRoute";
+import DaySchedule from "./components/DaySchedule";
 
 ReactDOM.render(
   <Router>
@@ -24,6 +25,7 @@ ReactDOM.render(
 
       <PrivateRoute exact path={'/tasks'} component={TasksFetch}/>
       <PrivateRoute exact path={"/task/:id?"} component={TaskCreate}/>
+      <PrivateRoute exact path={'/schedule/:year/:month/:day'} component={DaySchedule}/>
 
       <PrivateRoute exact path={'/calendar'} component={Calendar}/>
     </div>

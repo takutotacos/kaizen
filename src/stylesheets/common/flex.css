@@ -10,7 +10,9 @@
     align-items: center; }
   .flex.align-center {
     justify-content: center; }
-  .flex.expanded {
+  .flex .center-item {
+    align-self: center; }
+  .flex .expanded {
     flex: 1; }
 
 /*# sourceMappingURL=flex.css.map */

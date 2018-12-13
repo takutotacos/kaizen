@@ -3,19 +3,8 @@ import '../stylesheets/common/flex.scss'
 import '../stylesheets/common/font.scss'
 import '../stylesheets/common/margin.scss'
 import '../stylesheets/common/list.scss'
-import TasksFetch from "./TasksFetch";
-import Day from './Day';
-import {HOUR_IN_PIXELS} from "./TimeSlot";
-import {MINUTE_IN_PIXELS} from "../util/positionInDay";
-
-
-function flatten(selection) {
-  const result = [];
-  selection.forEach((selectionsInDay) => {
-    result.push(...selectionsInDay);
-  });
-  return result;
-}
+import TimeLine from './TimeLine';
+import DailyScheduleTasks from "./DailyScheduleTasks";
 
 class DaySchedule extends React.Component {
   constructor(props) {
@@ -23,8 +12,11 @@ class DaySchedule extends React.Component {
     this.state = {
       target_day: '',
       target_month: '',
-      target_year: ''
+      target_year: '',
+      selectedTasks: [],
     }
+
+    this.handleTaskScheduled = this.handleTaskScheduled.bind(this);
   }
 
   componentDidMount() {
@@ -58,54 +50,29 @@ class DaySchedule extends React.Component {
     return true;
   };
 
-  handleDayChange(dayIndex, selections) {
-    this.setState(({daySelections}) => {
-      const {onChange} = this.props;
-      if (!onChange) {
-        return undefined;
-      }
+  handleTaskScheduled(task) {
+    let updatedTasks = this.state.selectedTasks.concat(task);
 
-      daySelections[dayIndex] = selections;
-      const flattened = flatten(daySelections);
-      onChange(this.props.week, flattened);
-      return {daySelections}
+    this.setState({
+      selectedTasks: updatedTasks
     })
-
-  }
-
-  generateHourLimits() {
-    const {availableHourRange} = {availableHourRange: {start: 0, end: 24}};
-    return {
-      top: availableHourRange.start * HOUR_IN_PIXELS, // top blocker
-      bottom: availableHourRange.end * HOUR_IN_PIXELS,
-      bottomHeight: (24 - availableHourRange.end) * HOUR_IN_PIXELS,
-      difference: ((availableHourRange.end - availableHourRange.start) * HOUR_IN_PIXELS)
-        + (MINUTE_IN_PIXELS * 14)
-    };
   }
 
   render() {
-    console.log(this.generateHourLimits());
+    let {target_day, target_month, target_year, selectedTasks} = this.state;
+    let date = new Date(target_year, target_month - 1, target_day, 0, 0, 0);
 
     return (
       <div className={'flex'}>
-
-
-        <div className={'expanded'}>
-          <Day
-            timeConvention={'24h'}
-            timeZone={'Asia/Tokyo'}
-            index={1}
-            date={this.state.target_day}
-            initialSelections={[]}
-            onChange={this.handleDayChange}
-            hourLimits={this.generateHourLimits()}
+        <div className={'expanded parent_timeline_column'}>
+          <TimeLine
+            tasks={selectedTasks}
           />
         </div>
 
         <div className={'expanded'}>
           <div style={{margin: '16px'}}>
-            <TasksFetch/>
+            <DailyScheduleTasks handleTaskScheduled={this.handleTaskScheduled}/>
           </div>
         </div>
       </div>

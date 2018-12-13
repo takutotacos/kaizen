@@ -1,8 +1,10 @@
 import PropTypes from 'prop-types';
 import React, {PureComponent} from 'react';
 import momentTimezone from 'moment-timezone';
-import styles from '../stylesheets/TimeSlot.css';
 import positionInDay from '../util/positionInDay';
+import '../stylesheets/time_slot.scss'
+import '../stylesheets/common/flex.scss'
+import '../stylesheets/common/font.scss'
 
 export const HOUR_IN_PIXELS = 50;
 export const MINUTE_IN_PIXELS = HOUR_IN_PIXELS / 60;
@@ -34,27 +36,23 @@ export default class TimeSlot extends PureComponent {
   }
 
   handleResizerMouseDown(event) {
+    console.log('handle resizer mouse down');
     event.stopPropagation();
     const {onSizeChangeStart, end, start} = this.props;
     onSizeChangeStart({end, start}, event);
   }
 
   handleMouseDown(event) {
+    console.log('handle mouse down');
     const {onMoveStart, end, start} = this.props;
     onMoveStart({end, start}, event);
   }
 
   formatTime(date) {
-    const {timeConvention, timeZone, frozen} = this.props;
+    const { timeZone } = this.props;
     const m = momentTimezone.tz(date, timeZone);
-    if (timeConvention === '12h') {
-      if (frozen && m.minute() === 0) {
-        return m.format('ha');
-      }
-      return m.format('h:mma');
-    }
 
-    if (frozen && m.minute() === 0) {
+    if (m.minute() === 0) {
       return m.format('H');
     }
 
@@ -68,88 +66,77 @@ export default class TimeSlot extends PureComponent {
 
   render() {
     const {
-      date,
       start,
       end,
-      frozen,
-      width,
-      offset,
       timeZone,
       title,
-      touchToDelete
     } = this.props;
 
-    const top = positionInDay(date, start, timeZone);
-    const bottom = positionInDay(date, end, timeZone);
+    let top = positionInDay(start, timeZone);
+    let bottom = positionInDay(end, timeZone);
+    let height = (bottom - top);
 
-    const height = Math.max(
-      bottom - top - (frozen ? BOTTOM_GAP : 0),
-      1,
-    );
-    const classes = [styles.component];
-    if (frozen) {
-      classes.push(styles.push);
-    } else {
-      classes.push(styles.active);
-    }
+    let bodyTop = document.body.getBoundingClientRect().top;
+    let timeline_top = document.getElementsByClassName('timeline_top')[0].getBoundingClientRect().top;
+    let top_with_offset = top + Math.abs(timeline_top - bodyTop);
 
-    const style = { top, height }
-    if (typeof width !== 'undefined' && typeof offset !== 'undefined') {
-      style.width = `calc(${width * 100}% - 5px)`;
-      style.left = `${offset * 100}%`;
-    }
+    let {right, left} = document.getElementsByClassName('time_cell')[0].getBoundingClientRect();
+    let width = right - left;
+    let bodyWidth = document.body.getBoundingClientRect().width;
 
     return (
       <div
-        className={classes.join(' ')}
-        onMouseDown={frozen || touchToDelete ? undefined : this.handleMouseDown}
-        onClick={frozen || !touchToDelete ? undefined : this.handleDelete}
+        className={'time_slot flex direction-column'}
+        onMouseDown={this.handleMouseDown}
+        style={{
+          width: `${(width / bodyWidth) * 100}%`,
+          marginLeft: '6%',
+          position: 'absolute',
+          top: top_with_offset,
+          height: height,
+          zIndex: 2
+        }}
       >
         <div
-          className={styles.title}
+          className={'flex'}
           style={{
             lineHeight: `${(MINUTE_IN_PIXELS * 30) - (BOTTOM_GAP / 2)}px`
           }}
         >
-          {title && (
-            <span>
-              {title}
-              <br/>
-            </span>
-          )}
-          {this.timespan()}
-        </div>
-        {!frozen && !touchToDelete && (
-          <div>
-            <div
-              className={styles.handle}
-              onMouseDown={this.handleResizerMouseDown}
-            >
-              ...
-            </div>
-            <button
-              className={styles.delete}
-              onClick={this.handleDelete}
-              onMouseDown={this.preventMove}
-            >
-              x
-            </button>
+          <div className={'expanded font-bold font-middle'}>
+            {title && (
+              <span>
+                {title}
+                <br/>
+              </span>
+            )}
+            {this.timespan()}
           </div>
-        )}
+
+          <button
+            onClick={this.handleDelete}
+            onMouseDown={this.preventMove}
+          >
+            x
+          </button>
+        </div>
+        <div
+          className={'center-item font-bold font-middle'}
+          onMouseDown={this.handleResizerMouseDown}
+        >
+          ...
+        </div>
       </div>
     );
   }
 }
 
 TimeSlot.propTypes = {
-  touchToDelete: PropTypes.bool,
-  timeConvention: PropTypes.oneOf(['12', '24']),
   timeZone: PropTypes.string.isRequired,
 
   start: PropTypes.instanceOf(Date).isRequired,
   end: PropTypes.instanceOf(Date).isRequired,
   title: PropTypes.string,
-  frozen: PropTypes.bool,
 
   onSizeChangeStart: PropTypes.func,
   onMoveStart: PropTypes.func,
@@ -158,8 +145,4 @@ TimeSlot.propTypes = {
   // Props used to signal overlap
   width: PropTypes.number,
   offset: PropTypes.number
-};
-
-TimeSlot.defaultProps = {
-  touchToDelete: false,
 };
