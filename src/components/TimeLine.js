@@ -1,103 +1,12 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
-import './TimelineScheduleModal';
 import '../stylesheets/common/day.scss';
 import '../stylesheets/common/flex.scss';
 import '../stylesheets/common/font.scss';
 import TimeScheduleModal from "./TimelineScheduleModal";
+import TimeCell from './TimeCell';
 import makeTwoDigits from "../util/arrangeNumber";
-
-class TimeCell extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.handleOnDeleteClick = this.handleOnDeleteClick.bind(this);
-    this.handleOnEditClick = this.handleOnEditClick.bind(this);
-  }
-
-  handleOnEditClick() {
-    if (!this.props.isOccupied) {
-      return;
-    }
-
-    this.props.onEditClick(this.props);
-  }
-
-  handleOnDeleteClick() {
-    if (!this.props.isOccupied) {
-      return;
-    }
-
-    this.props.onDeleteClick(this.props);
-  }
-
-  render() {
-    let {isOccupied, startIndex, isEnd, index, title} = this.props;
-
-    let oneHourChunk = index % 4 === 3;
-    let borderLine = oneHourChunk ? '1px black solid' : '';
-    let backgroundColor = isOccupied ? 'beige' : 'blue';
-    let isStartCell = startIndex === index;
-
-    // when occupied, only the end cell needs border line
-    borderLine = isOccupied && !isEnd ? '' : borderLine;
-    return (
-      <div
-        className={'flex'}
-        style={{
-          padding: '0px 12px',
-          backgroundColor: backgroundColor,
-          height: '15px',
-          borderBottom: borderLine
-        }}
-      >
-        {oneHourChunk &&
-          (<div
-            style={{
-              color: 'black',
-              fontWeight: 'bold'
-            }}
-           >
-              {parseInt(index / 4) + 1}:00
-          </div>)
-        }
-        {isStartCell &&
-          (<div className={'expanded font-middle'}>
-            {title}
-          </div>)
-        }
-
-        {isStartCell &&
-          (<div
-            onClick={this.handleOnEditClick}
-            className={'btn btn-sm'}>
-            edit
-          </div>)
-        }
-
-        {isStartCell &&
-          (<div
-            onClick={this.handleOnDeleteClick}
-            className={'btn btn-sm'}>
-            x
-          </div>)
-        }
-      </div>
-    );
-  }
-}
-
-TimeCell.propTypes = {
-  index: PropTypes.number.isRequired,
-  isOccupied: PropTypes.bool.isRequired,
-  startIndex: PropTypes.number, // index of the start cell
-  isEnd: PropTypes.bool, // index of the start cell
-  title: PropTypes.string.isRequired,
-
-  onEditClick: PropTypes.func.isRequired,
-  onDeleteClick: PropTypes.func.isRequired,
-};
 
 export default class TimeLine extends React.Component {
   constructor(props) {
@@ -133,6 +42,7 @@ export default class TimeLine extends React.Component {
     })
   }
 
+  // assign one hour worth cells as long as consecutive four block is available
   initialSchedule(tasks) {
     let temp = this.state.cells.slice();
 
@@ -142,11 +52,13 @@ export default class TimeLine extends React.Component {
         if (temp[i] !== 0) continue; // the cell is assigned
 
         for (let j = 0; j < 4; j++) {
+          if (temp[i + j] !== 0) break; // if the cell is assigned
+
           temp[i + j] = id
         }
         break;
       }
-    })
+    });
 
     return temp;
   }
@@ -332,6 +244,12 @@ export default class TimeLine extends React.Component {
 
     return (
       <div className={'margin-m'}>
+        <div className={'flex align-center-vertical'}>
+          <h1 className={'expanded'}>Timeline</h1>
+
+          <div className={'btn btn-primary'}>Submit</div>
+        </div>
+
         {cells.map((value, i) => (
 
           <TimeCell
