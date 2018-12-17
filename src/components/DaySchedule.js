@@ -3,6 +3,7 @@ import '../stylesheets/common/flex.scss'
 import '../stylesheets/common/font.scss'
 import '../stylesheets/common/margin.scss'
 import '../stylesheets/common/list.scss'
+import '../stylesheets/common/position.scss'
 import TimeLine from './TimeLine';
 import DailyScheduleTasks from "./DailyScheduleTasks";
 
@@ -17,6 +18,7 @@ class DaySchedule extends React.Component {
     }
 
     this.handleTaskScheduled = this.handleTaskScheduled.bind(this);
+    this.handleOnDeleteClick = this.handleOnDeleteClick.bind(this);
   }
 
   componentDidMount() {
@@ -58,21 +60,44 @@ class DaySchedule extends React.Component {
     })
   }
 
+  handleOnDeleteClick(taskId) {
+    let temp = this.state.selectedTasks.slice();
+
+    for (let i = 0; i < temp.length; i++) {
+      if (temp[i].id === taskId) {
+        temp.remove(temp[i]);
+        break;
+      }
+    }
+
+    this.setState({
+      selectedTasks: temp,
+    })
+  }
+
   render() {
     let {target_day, target_month, target_year, selectedTasks} = this.state;
     let date = new Date(target_year, target_month - 1, target_day, 0, 0, 0);
 
     return (
-      <div className={'flex'}>
-        <div className={'expanded parent_timeline_column'}>
-          <TimeLine
-            tasks={selectedTasks}
-          />
+      <div>
+        <div
+          className={'align-center font-large font-bold'}
+        >
+          {`${target_year}/${target_month}/${target_day}'s Schedule`}
         </div>
+        <div className={'flex'}>
+          <div className={'expanded parent_timeline_column'}>
+            <TimeLine
+              tasks={selectedTasks}
+              onDeleteClick={this.handleOnDeleteClick}
+            />
+          </div>
 
-        <div className={'expanded'}>
-          <div style={{margin: '16px'}}>
-            <DailyScheduleTasks handleTaskScheduled={this.handleTaskScheduled}/>
+          <div className={'expanded'}>
+            <div style={{margin: '16px'}}>
+              <DailyScheduleTasks handleTaskScheduled={this.handleTaskScheduled}/>
+            </div>
           </div>
         </div>
       </div>
