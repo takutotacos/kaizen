@@ -1,6 +1,9 @@
 import React from 'react';
 import Select from 'react-select';
 import TaskService from '../util/TaskService';
+import '../stylesheets/common/flex.scss'
+import '../stylesheets/common/margin.scss'
+
 let Redirect = require('react-router-dom').Redirect;
 
 const statusOptions = [
@@ -33,7 +36,7 @@ class TaskCreate extends React.Component {
       importance: '',
       urgency: '',
       existing: false,
-      created: false
+      updated: false
     }
     this.service = new TaskService();
 
@@ -44,6 +47,7 @@ class TaskCreate extends React.Component {
     this.handleChangeImportance = this.handleChangeImportance.bind(this);
     this.handleChangeUrgency = this.handleChangeUrgency.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -114,17 +118,30 @@ class TaskCreate extends React.Component {
     ).then(res => {
       // todo some feedback
       this.setState({
-        created: true
+        updated: true
       });
     }).catch(error => {
       alert(error);
     })
   }
 
+  handleDelete() {
+    this.service.delete(this.state.id)
+      .then(res => {
+        this.setState({
+          updated: true
+        });
+      })
+      .catch(error => console.log(error));
+  }
+
   render() {
-    if (this.state.created) {
+    if (this.state.updated) {
       return <Redirect to={'/tasks'}/>
     }
+
+    let {existing} = this.state;
+    let submitText = existing ? "Update" : "Create";
 
     return (
       <div className={'container'}>
@@ -161,14 +178,28 @@ class TaskCreate extends React.Component {
                       options={importanceOptions}/>
           </div>
 
-          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
+          <div className={'margin-tb-s col-md-8'}>
             <label>Urgency:</label>
               <Select value={this.state.urgency}
                       onChange={this.handleChangeUrgency}
                       options={urgencyOptions}/>
           </div>
-          <div>
-            <input type={'submit'} value={'Create'} className={'btn btn-primary col-md-4 col-md-offset-4'}/>
+          <div
+            className={'flex right col-md-8'}
+          >
+            {existing && (
+              <input
+                type={'button'}
+                onClick={this.handleDelete}
+                className={'btn btn-danger margin-r-m'}
+                value={'delete'}
+              />
+            )}
+            <input
+              type={'submit'}
+              value={submitText}
+              className={'btn btn-primary'}
+            />
           </div>
         </form>
       </div>

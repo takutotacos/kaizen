@@ -87,6 +87,12 @@ class TaskService {
       return error;
     })
   }
+
+  delete(id) {
+    return axios.delete(domain + 'tickets/' + id, {headers: authHeader()})
+      .then((res) => res)
+      .catch((error) => error)
+  }
 }
 
 export default TaskService

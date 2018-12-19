@@ -25,8 +25,8 @@ export default class TimeSlot extends PureComponent {
 
   handleDelete(event) {
     if (new Date().getTime() - this.creationTime < 500) {
-      // Just created. Ignore this event, as it's likely coming from the same
-      // click event that created it.
+      // Just updated. Ignore this event, as it's likely coming from the same
+      // click event that updated it.
       return;
     }
 
