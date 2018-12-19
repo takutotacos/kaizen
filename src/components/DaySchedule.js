@@ -82,16 +82,19 @@ class DaySchedule extends React.Component {
     return (
       <div>
         <div
-          className={'align-center font-large font-bold'}
+          className={'align-center'}
         >
-          {`${target_year}/${target_month}/${target_day}'s Schedule`}
+          {`${target_year}/${target_month}/${target_day}'s schedule`}
         </div>
         <div className={'flex'}>
           <div className={'expanded parent_timeline_column'}>
             <TimeLine
               tasks={selectedTasks}
               onDeleteClick={this.handleOnDeleteClick}
-            />
+              year={target_year}
+              month={target_month}
+              day={target_day}
+              />
           </div>
 
           <div className={'expanded'}>
