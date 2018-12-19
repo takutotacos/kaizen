@@ -20,18 +20,25 @@ class UserService {
       });
   }
 
-  login(email, password, funcSuccess, funcFailure) {
-    axios.post(domain + 'users/login', {
+  logout() {
+    localStorage.removeItem('user');
+  }
+
+  login(email, password) {
+    return axios.post(domain + 'users/login', {
       email: email,
       password: password
     })
       .then((res) => {
-        console.log('the user signup was successful');
-        funcSuccess();
-      })
-      .catch((error) => {
-        console.log('the error occured during user login');
-        funcFailure();
+        console.log('the user login was successful');
+        if (res.data) {
+          let user = {
+            authdata: window.btoa(res.data.user.email + ':' + res.data.user.password),
+            name: res.data.user.name
+          };
+          localStorage.setItem('user', JSON.stringify(user));
+          return res.data;
+        }
       });
   }
 }

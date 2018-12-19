@@ -21,7 +21,11 @@
     justify-content: center;
   }
 
-  &.expanded {
+  .center-item {
+    align-self: center;
+  }
+
+  .expanded {
     flex: 1;
   }
 }

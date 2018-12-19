@@ -9,24 +9,18 @@ class UserLogin extends Component {
       password: '',
       should_alert_email_empty: false,
       should_alert_password_empty: false,
+      error: false,
+      errorMessage: ''
     }
     this.service = new UserService();
 
-    this.handleEmailChange = this.handleEmailChange.bind(this);
-    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleEmailChange(event) {
-    this.setState({
-      email: event.target.value
-    })
-  }
-
-  handlePasswordChange(event) {
-    this.setState({
-      password: event.target.value
-    })
+  handleChange(e) {
+    const { name, value } = e.target;
+    this.setState({[name]: value});
   }
 
   handleSubmit(event) {
@@ -36,18 +30,20 @@ class UserLogin extends Component {
       return;
     }
 
-    this.service.login(this.state.email,
-      this.state.password,
-      this.handleSuccess,
-      this.handleFailure)
-  }
-
-  handleSuccess() {
-    alert('login successful');
-  }
-
-  handleFailure() {
-    alert('login failed');
+    this.service.login(this.state.email, this.state.password)
+      .then(data => {
+        this.props.history.push({
+          pathname: '/',
+          state: {action: 'alert-info', text: 'Successfully logged in.'}
+        });
+      })
+      .catch(error => {
+        this.setState({
+          error: true,
+          errorMessage: 'Email/Password pair does not match'
+        });
+        alert('login failed');
+      })
   }
 
   isEmailEmpty() {
@@ -69,24 +65,28 @@ class UserLogin extends Component {
     return (
       <div className={'container'}>
         <p>Welcome back!</p>
+
+        {this.state.error && <div className={`alert alert-danger`}>
+          {this.state.errorMessage}
+        </div>}
+
         <form onSubmit={this.handleSubmit}>
           <div className={'margin-tb-s'}>
             <label>
               Email: {this.state.should_alert_email_empty ? 'Necessary' : ''}
-              <input type={'text'} value={this.state.email} onChange={this.handleEmailChange}
+              <input type={'text'} value={this.state.email} name='email' onChange={this.handleChange}
                      className={'form-control'}/>
             </label>
           </div>
           <div className={'margin-tb-s'}>
             <label>
               Password: {this.state.should_alert_password_empty ? 'Necessary' : ''}
-              <input type={'password'} value={this.state.password}
-                     onChange={this.handlePasswordChange}
+              <input type={'password'} value={this.state.password} name='password' onChange={this.handleChange}
                      className={'form-control'}/>
             </label>
           </div>
           <div className={'margin-tb-s'}>
-            <input type={'submit'} value={'Sign Up'} className={'btn btn-primary'}/>
+            <input type={'submit'} value={'Login'} className={'btn btn-primary'}/>
           </div>
         </form>
       </div>

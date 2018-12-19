@@ -101,7 +101,7 @@ class TaskCreate extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let id = this.state.existing ? '' : this.state.id;
+    let id = this.state.existing ? this.state.id : '';
 
     this.service.updateOrCreate(
       id,

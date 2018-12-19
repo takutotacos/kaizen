@@ -4,27 +4,30 @@ import {BrowserRouter as Router, Route} from 'react-router-dom';
 import './index.css';
 import * as serviceWorker from './serviceWorker';
 
-import App from './App';
+import Home from './components/Home';
 import Nav from './components/Nav';
 import UserLogin from './components/UserLogin';
 import UserSignup from './components/UserSignup';
 import TaskCreate from './components/TaskCreate';
 import TasksFetch from './components/TasksFetch';
 import Calendar from './components/Calendar';
+import {PrivateRoute} from "./components/PrivateRoute";
+import DaySchedule from "./components/DaySchedule";
 
 ReactDOM.render(
   <Router>
     <div>
       <Nav/>
 
-      <Route exact path={'/'} component={App}/>
+      <Route exact path={'/'} component={Home}/>
       <Route exact path={'/user'} component={UserSignup}/>
       <Route exact path={'/user/login'} component={UserLogin}/>
 
-      <Route exact path={'/tasks'} component={TasksFetch}/>
-      <Route exact path={"/task/:id?"} component={TaskCreate}/>
+      <PrivateRoute exact path={'/tasks'} component={TasksFetch}/>
+      <PrivateRoute exact path={"/task/:id?"} component={TaskCreate}/>
+      <PrivateRoute exact path={'/schedule/:year/:month/:day'} component={DaySchedule}/>
 
-      <Route exact path={'/calendar'} component={Calendar}/>
+      <PrivateRoute exact path={'/calendar'} component={Calendar}/>
     </div>
   </Router>
   , document.getElementById('root')

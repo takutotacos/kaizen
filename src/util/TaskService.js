@@ -1,11 +1,12 @@
 import axios from 'axios';
+import {authHeader} from "./AuthHeader";
 
 let domain = require('./Common').domain;
 
 class TaskService {
   fetchAll() {
     console.log("communicating to " + domain);
-    return axios.get(domain + 'tickets')
+    return axios.get(domain + 'tickets', {headers: authHeader()})
       .then((res) => {
         return res.data.map((item) => {
 
@@ -70,15 +71,15 @@ class TaskService {
       status: status,
       importance: importance,
       urgency: urgency,
-      owner_id: '5bd119149f3310161e95f907', // todo user_id add session
       label_id: ["5bce4f85fedd491adde9979a"] // todo label_ids
     };
 
     if (id) {
+      console.log('id is there');
       params['id'] = id;
     }
 
-    return axios.post(domain + 'tickets', params)
+    return axios.post(domain + 'tickets', params, {headers: authHeader()})
     .then((res) => {
       return res;
     })
