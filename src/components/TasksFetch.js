@@ -4,12 +4,15 @@ import '../stylesheets/common/list.scss'
 import '../stylesheets/common/margin.scss'
 import '../stylesheets/common/padding.scss'
 import '../stylesheets/common/font.scss'
+import logoEdit from '../images/baseline_edit_black_18dp.png';
+import logoDelete from '../images/baseline_delete_forever_black_18dp.png';
+import logoDone from '../images/baseline_done_black_18dp.png';
 
 let React = require('react');
 let PropTypes = require('prop-types');
 let Link = require('react-router-dom').Link;
 
-let TaskList= (props) => {
+let TaskList = (props) => {
   return (
     <ul className={'task-list list-parent padding-xs'}>
       {props.tasks.map((task) => {
@@ -37,33 +40,85 @@ let TaskList= (props) => {
               </div>
             </div>
 
-            <div className={'flex direction-column align-center'}>
-              <Link className={'btn btn-primary btn-sm'}
-                    to={{
-                      pathname: "/task/" + task.id,
-                      state: {
-                        id: task.id,
-                        title: task.title,
-                        description: task.description,
-                        time: task.time,
-                        status: task.status,
-                        importance: task.importance,
-                        urgency: task.urgency,
-                        label_ids: task.label_ids
-                      }
-                    }}>
-                Edit
-              </Link>
-            </div>
+            <button
+              className={'center-item margin-l-s'}
+              style={{
+                width: '20px',
+                height: '20px',
+                background: 'none',
+                border: 'none',
+              }}
+            >
+              <img
+                src={logoDone}
+                style={{
+                  width: '20px',
+                  height: '20px'
+                }}
+              />
+            </button>
+
+            <button
+              className={'center-item margin-l-s'}
+              onClick={() => props.handleOnDelete(task.id)}
+              style={{
+                width: '20px',
+                height: '20px',
+                background: 'none',
+                border: 'none',
+              }}
+            >
+              <img
+                src={logoDelete}
+                style={{
+                  width: '20px',
+                  height: '20px'
+                }}
+              />
+            </button>
+            <Link className={'center-item margin-l-s'}
+                  to={{
+                    pathname: "/task/" + task.id,
+                    state: {
+                      id: task.id,
+                      title: task.title,
+                      description: task.description,
+                      time: task.time,
+                      status: task.status,
+                      importance: task.importance,
+                      urgency: task.urgency,
+                      label_ids: task.label_ids
+                    }
+                  }}>
+              <button
+                style={{
+                  width: '20px',
+                  height: '20px',
+                  background: 'none',
+                  border: 'none',
+                }}
+              >
+                <img
+                  src={logoEdit}
+                  style={{
+                    width: '20px',
+                    height: '20px'
+                  }}
+                />
+              </button>
+            </Link>
           </li>
-        )})}
+        );
+      })}
     </ul>
-  )
+  );
 }
 
 TaskList.protoTypes = {
   tasks: PropTypes.array.isRequired,
-}
+  handleOnDelete: PropTypes.func.isRequired,
+  handleOnCompleted: PropTypes.func.isRequired,
+};
 
 class TasksFetch extends React.Component {
   constructor(props) {
@@ -72,9 +127,21 @@ class TasksFetch extends React.Component {
       tasks: [],
     }
     this.service = new TaskService();
+    this.handleDelete = this.handleDelete.bind(this);
+    this.fetchAllTasks = this.fetchAllTasks.bind(this);
   }
 
   componentDidMount() {
+    this.fetchAllTasks();
+  }
+
+  handleDelete(id) {
+    this.service.delete(id)
+      .then(() => this.fetchAllTasks())
+      .catch((msg) => alert(msg));
+  }
+
+  fetchAllTasks() {
     this.service.fetchAll()
       .then((data) => {
         this.setState({
@@ -90,7 +157,10 @@ class TasksFetch extends React.Component {
     return (
       <div>
         <h1>Task List</h1>
-        <TaskList tasks={this.state.tasks}/>
+        <TaskList
+          tasks={this.state.tasks}
+          handleOnDelete={this.handleDelete}
+        />
       </div>
     )
   }

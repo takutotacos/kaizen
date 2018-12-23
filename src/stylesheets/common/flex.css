@@ -12,6 +12,8 @@
     justify-content: center; }
   .flex .center-item {
     align-self: center; }
+  .flex .start-item {
+    align-self: flex-start; }
   .flex .expanded {
     flex: 1; }
 

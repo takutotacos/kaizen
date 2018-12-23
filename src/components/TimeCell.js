@@ -1,6 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 
+import logoEdit from '../images/baseline_edit_black_18dp.png';
+import logoDelete from '../images/baseline_delete_forever_black_18dp.png';
+import logoDone from '../images/baseline_done_black_18dp.png';
+
 import '../stylesheets/common/day.scss';
 import '../stylesheets/common/flex.scss';
 import '../stylesheets/common/font.scss';
@@ -66,19 +70,63 @@ export default class TimeCell extends React.Component {
         }
 
         {isStartCell &&
-        (<div
-          onClick={this.handleOnEditClick}
-          className={'btn btn-sm'}>
-          edit
-        </div>)
+        (<button
+          style={{
+            width: '20px',
+            height: '20px',
+            background: 'none',
+            border: 'none'
+          }}
+        >
+          <img
+            src={logoDone}
+            onClick={this.handleOnEditClick}
+            style={{
+              width: '20px',
+              height: '20px'
+            }}
+          />
+        </button>)
         }
 
         {isStartCell &&
-        (<div
-          onClick={this.handleOnDeleteClick}
-          className={'btn btn-sm'}>
-          x
-        </div>)
+        (<button
+            style={{
+              width: '20px',
+              height: '20px',
+              background: 'none',
+              border: 'none'
+            }}
+          >
+          <img
+            src={logoEdit}
+            onClick={this.handleOnEditClick}
+            style={{
+              width: '20px',
+              height: '20px'
+            }}
+          />
+         </button>)
+        }
+
+        {isStartCell &&
+          (<button
+            style={{
+              width: '20px',
+              height: '20px',
+              background: 'none',
+              border: 'none'
+            }}
+           >
+            <img
+              src={logoDelete}
+              onClick={this.handleOnDeleteClick}
+              style={{
+                width: '20px',
+                height: '20px'
+              }}
+            />
+          </button>)
         }
       </div>
     );

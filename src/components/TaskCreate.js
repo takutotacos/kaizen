@@ -154,8 +154,12 @@ class TaskCreate extends React.Component {
 
           <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
             <label>Description:</label>
-              <textarea value={this.state.description} onChange={this.handleChangeDisc}
-                     className={'form-control'}/>
+              <textarea
+                value={this.state.description}
+                onChange={this.handleChangeDisc}
+                className={'form-control'}
+                rows={8}
+              />
           </div>
 
           <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
@@ -178,14 +182,14 @@ class TaskCreate extends React.Component {
                       options={importanceOptions}/>
           </div>
 
-          <div className={'margin-tb-s col-md-8'}>
+          <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
             <label>Urgency:</label>
               <Select value={this.state.urgency}
                       onChange={this.handleChangeUrgency}
                       options={urgencyOptions}/>
           </div>
           <div
-            className={'flex right col-md-8'}
+            className={'flex right col-md-8 col-md-offset-2'}
           >
             {existing && (
               <input
