@@ -8,8 +8,10 @@
   -moz-border-radius: 10px;
   border-radius: 10px; }
 
-.list-item {
+.list-item.active {
   background-color: aqua; }
+.list-item.not-active {
+  background-color: #9999; }
 
 .scroll-vertical {
   overflow-y: scroll; }

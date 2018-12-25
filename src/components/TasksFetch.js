@@ -16,8 +16,10 @@ let TaskList = (props) => {
   return (
     <ul className={'task-list list-parent padding-xs'}>
       {props.tasks.map((task) => {
+        console.log(task);
+        let backgroundColor = task.status['value'] === 'done' ? 'list-item not-active' : 'list-item active';
         return (
-          <li className={'list-item margin-s padding-s flex'} key={task.id}>
+          <li className={`${backgroundColor} margin-s padding-s flex`} key={task.id}>
             <div className={'flex direction-column expanded'}>
               <p className={'font-bold font-large'}>{task.title}</p>
 
@@ -42,6 +44,7 @@ let TaskList = (props) => {
 
             <button
               className={'center-item margin-l-s'}
+              onClick={() => props.handleOnCompleted(task.id)}
               style={{
                 width: '20px',
                 height: '20px',
@@ -128,6 +131,7 @@ class TasksFetch extends React.Component {
     }
     this.service = new TaskService();
     this.handleDelete = this.handleDelete.bind(this);
+    this.handleDone = this.handleDone.bind(this);
     this.fetchAllTasks = this.fetchAllTasks.bind(this);
   }
 
@@ -141,6 +145,12 @@ class TasksFetch extends React.Component {
       .catch((msg) => alert(msg));
   }
 
+  handleDone(id) {
+    this.service.doneTask(id)
+      .then(() => this.fetchAllTasks())
+      .catch((msg) => alert(msg));
+  }
+
   fetchAllTasks() {
     this.service.fetchAll()
       .then((data) => {
@@ -149,7 +159,7 @@ class TasksFetch extends React.Component {
         })
       })
       .catch((msg) => {
-        alert(msg);
+        alert(msg.message);
       })
   }
 
@@ -160,6 +170,7 @@ class TasksFetch extends React.Component {
         <TaskList
           tasks={this.state.tasks}
           handleOnDelete={this.handleDelete}
+          handleOnCompleted={this.handleDone}
         />
       </div>
     )

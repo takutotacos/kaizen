@@ -1,28 +1,28 @@
 import React from 'react';
-import Select from 'react-select';
 import TaskService from '../util/TaskService';
+import CustomRadioButton from "./CustomRadioButton";
 import '../stylesheets/common/flex.scss'
 import '../stylesheets/common/margin.scss'
 
 let Redirect = require('react-router-dom').Redirect;
 
-const statusOptions = [
-  {value: 'wip', label: 'Work In Progress'},
-  {value: 'done', label: 'Completed'},
-  {value: 'waiting', label: 'Waiting'},
-]
+const statusOptions = {
+  'Work In Progress': 'wip',
+  'Completed': 'done',
+  'Waiting': 'waiting'
+};
 
-const importanceOptions = [
-  {value: 'low', label: 'Low'},
-  {value: 'medium', label: 'Medium'},
-  {value: 'high', label: 'High'},
-]
+const importanceOptions = {
+  'Low': 'low',
+  'Medium': 'medium',
+  'High': 'high',
+}
 
-const urgencyOptions = [
-  {value: 'low', label: 'Low'},
-  {value: 'medium', label: 'Medium'},
-  {value: 'high', label: 'High'},
-]
+const urgencyOptions = {
+  'Low': 'low',
+  'Medium': 'medium',
+  'High': 'high',
+}
 
 class TaskCreate extends React.Component {
   constructor(props) {
@@ -59,9 +59,9 @@ class TaskCreate extends React.Component {
       title: inheritedState.title,
       description: inheritedState.description,
       time: inheritedState.time,
-      status: inheritedState.status,
-      importance: inheritedState.importance,
-      urgency: inheritedState.urgency,
+      status: inheritedState.status["label"],
+      importance: inheritedState.importance["label"],
+      urgency: inheritedState.urgency["label"],
       existing: true,
       label_ids: inheritedState.label_ids
     })
@@ -85,22 +85,17 @@ class TaskCreate extends React.Component {
     })
   }
 
-  handleChangeStatus(selectedOption) {
-    this.setState({
-      status: selectedOption
-    })
+  handleChangeStatus(selected) {
+    this.setState({status: selected})
   }
 
-  handleChangeImportance(selectedOption) {
-    this.setState({
-      importance: selectedOption,
-    })
+  handleChangeImportance(selected) {
+    this.setState({importance: selected})
   }
 
-  handleChangeUrgency(selectedOption) {
-    this.setState({
-      urgency: selectedOption
-    })
+  handleChangeUrgency(selected) {
+    console.log(selected);
+    this.setState({urgency: selected})
   }
 
   handleSubmit(event) {
@@ -112,9 +107,9 @@ class TaskCreate extends React.Component {
       this.state.title,
       this.state.description,
       this.state.time,
-      this.state.status['value'],
-      this.state.importance['value'],
-      this.state.urgency['value'],
+      statusOptions[this.state.status],
+      importanceOptions[this.state.importance],
+      urgencyOptions[this.state.urgency]
     ).then(res => {
       // todo some feedback
       this.setState({
@@ -170,23 +165,35 @@ class TaskCreate extends React.Component {
 
           <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
             <label>Status:</label>
-              <Select value={this.state.status}
-                      onChange={this.handleChangeStatus}
-                      options={statusOptions}/>
+            <CustomRadioButton
+              choices={Object.keys(statusOptions)}
+              choiceColors={['red', 'blue', 'yellow']}
+              choiceName={"status"}
+              handleOnChanged={this.handleChangeStatus}
+              pick={this.state.status}
+            />
           </div>
 
           <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
             <label>Importance:</label>
-              <Select value={this.state.importance}
-                      onChange={this.handleChangeImportance}
-                      options={importanceOptions}/>
+            <CustomRadioButton
+              choices={Object.keys(importanceOptions)}
+              choiceColors={['red', 'blue', 'yellow']}
+              choiceName={"importance"}
+              handleOnChanged={this.handleChangeImportance}
+              pick={this.state.importance}
+            />
           </div>
 
           <div className={'margin-tb-s col-md-8 col-md-offset-2'}>
             <label>Urgency:</label>
-              <Select value={this.state.urgency}
-                      onChange={this.handleChangeUrgency}
-                      options={urgencyOptions}/>
+            <CustomRadioButton
+              choices={Object.keys(urgencyOptions)}
+              choiceColors={['red', 'blue', 'yellow']}
+              choiceName={"urgency"}
+              handleOnChanged={this.handleChangeUrgency}
+              pick={this.state.urgency}
+            />
           </div>
           <div
             className={'flex right col-md-8 col-md-offset-2'}

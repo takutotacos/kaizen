@@ -75,17 +75,30 @@ class TaskService {
     };
 
     if (id) {
-      console.log('id is there');
+      console.log('id included');
       params['id'] = id;
     }
 
     return axios.post(domain + 'tickets', params, {headers: authHeader()})
     .then((res) => {
+      console.log("success");
       return res;
     })
     .catch((error) => {
+      console.log("error");
       return error;
     })
+  }
+
+  doneTask(id) {
+    let params = {
+      id: id,
+      status: 'done'
+    };
+
+    return axios.patch(domain + 'tickets', params, {headers: authHeader()})
+      .then((res) => res)
+      .catch((error) => error);
   }
 
   delete(id) {

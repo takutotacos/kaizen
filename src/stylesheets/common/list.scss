@@ -10,7 +10,13 @@
 }
 
 .list-item {
-  background-color: $blue;
+  &.active {
+    background-color: $blue;
+  }
+
+  &.not-active {
+    background-color: #9999;
+  }
 }
 
 .scroll-vertical {
