@@ -36,15 +36,18 @@ export default class TimeLine extends React.Component {
     this.handleOnEditClick = this.handleOnEditClick.bind(this);
     this.handleOnDeleteClick = this.handleOnDeleteClick.bind(this);
     this.handleOnCloseDialog = this.handleOnCloseDialog.bind(this);
+    this.handleOnCompletedClick = this.handleOnCompletedClick.bind(this);
     this.taskTitle = this.taskTitle.bind(this);
     this.taskId = this.taskId.bind(this);
     this.isStartIndex = this.isStartIndex.bind(this);
     this.isEndIndex = this.isEndIndex.bind(this);
     this.startIndex = this.startIndex.bind(this);
+    this.scheduleFromScheduleId = this.scheduleFromScheduleId.bind(this);
+    this.isCompleted = this.isCompleted.bind(this);
   }
 
   componentWillReceiveProps(props) {
-    // todo this is not recommended maybe
+    // todo this is not recommended
     // https://reactjs.org/docs/react-component.html#shouldcomponentupdate
     if (this.state.year === undefined) {
       this.initialScheduleFetch(props.year, props.month, props.day);
@@ -155,9 +158,10 @@ export default class TimeLine extends React.Component {
     }
 
     let {year, month, day} = this.props;
-    let targetTaskId = this.state.schedules.get(targetScheduleId).task_id;
+    let schedule = this.state.schedules.get(targetScheduleId);
+
     this.service
-      .updateSchedule(year, month, day, targetScheduleId, targetTaskId, start, end)
+      .updateSchedule(year, month, day, targetScheduleId, schedule.task_id, start, end, schedule.is_completed)
       .then((res) => {
         let cellClone = cells.slice();
 
@@ -216,6 +220,7 @@ export default class TimeLine extends React.Component {
       end_time: endString,
       task_id: res.ticket,
       task_title: taskTitle,
+      is_completed: res.completed,
    };
   }
 
@@ -258,7 +263,6 @@ export default class TimeLine extends React.Component {
         this.props.onDeleteClick({taskId: scheduleId})
       })
       .catch((err) => console.log(err));
-
   }
 
   handleOnEditClick({startIndex}) {
@@ -280,50 +284,74 @@ export default class TimeLine extends React.Component {
     })
   }
 
+  handleOnCompletedClick({startIndex}) {
+    // get the task from the tasks by using the startIndex
+    let {year, month, day, cells, schedules} = this.state;
+    let scheduleId = cells[startIndex];
+    let schedule = schedules.get(scheduleId);
+
+    let startTime = TimelineCellUtil.calculateTimeString(schedule.start_cell);
+    let endTime = TimelineCellUtil.calculateTimeString(schedule.end_cell);
+
+    this.service
+      .updateSchedule(year, month, day, scheduleId, schedule.task_id, startTime, endTime, !schedule.is_completed)
+      .then((res) => {
+        let updatedSchedule = this.scheduleFromResponse(res, schedule.task_title);
+        let {id} = updatedSchedule;
+
+        let schedulesTemp = this.copySchedules(this.state.schedules);
+        schedulesTemp.set(id, updatedSchedule);
+
+        this.setState({
+          schedules: schedulesTemp
+        });
+      })
+      .catch((err) => console.log(err));
+  }
+
   handleOnCloseDialog() {
     this.setState({
       isModalOpen: false,
     })
   }
 
-  taskTitle(taskId) {
-    let {schedules} = this.state;
-
-    let schedule = schedules.get(taskId);
+  taskTitle(scheduleId) {
+    let schedule = this.scheduleFromScheduleId(scheduleId);
     return schedule === undefined ? undefined : schedule.task_title;
   }
 
   taskId(scheduleId) {
-    let {schedules} = this.state;
-
-    let schedule = schedules.get(scheduleId);
+    let schedule = this.scheduleFromScheduleId(scheduleId);
     return schedule === undefined ? undefined : schedule.task_id;
   }
 
   isEndIndex(scheduleId, cellIndex) {
-    let {schedules} = this.state;
-
-    let schedule = schedules.get(scheduleId);
+    let schedule = this.scheduleFromScheduleId(scheduleId);
     return schedule === undefined ? false : schedule.end_cell === cellIndex;
   }
 
   isStartIndex(scheduleId, cellIndex) {
-    let {schedules} = this.state;
-
-    let schedule = schedules.get(scheduleId);
+    let schedule = this.scheduleFromScheduleId(scheduleId);
     return schedule === undefined ? false : schedule.start_cell === cellIndex;
   }
 
   startIndex(scheduleId) {
-    let {schedules} = this.state;
-
-    let schedule = schedules.get(scheduleId);
+    let schedule = this.scheduleFromScheduleId(scheduleId);
     return schedule === undefined ? undefined : schedule.start_cell;
   }
 
+  scheduleFromScheduleId(scheduleId) {
+    let {schedules} = this.state;
+
+    return schedules.get(scheduleId);
+  }
+
+  isCompleted(scheduleId) {
+    let schedule = this.scheduleFromScheduleId(scheduleId);
+    return schedule === undefined ? false : schedule.is_completed;
+  }
+
   render() {
-    console.log("rendering");
-    console.log(this.state.cells);
     return (
       <div className={'margin-m'}>
         <div className={'flex align-center-vertical'}>
@@ -338,21 +366,23 @@ export default class TimeLine extends React.Component {
             startIndex={this.startIndex(value)}
             isEnd={this.isEndIndex(value, i)}
             title={this.taskTitle(value)}
+            isCompleted={this.isCompleted(value)}
             onEditClick={this.handleOnEditClick}
             onDeleteClick={this.handleOnDeleteClick}
+            onCompletedClick={this.handleOnCompletedClick}
           />
 
         ))}
 
-          <TimeScheduleModal
-            modalIsOpen={this.state.isModalOpen}
-            onRequestClose={this.handleOnCloseDialog}
-            start={this.state.targetTaskStart}
-            end={this.state.targetTaskEnd}
-            title={this.state.targetTaskTitle}
-            onChangeSchedule={this.scheduleTask}/>
+        <TimeScheduleModal
+          modalIsOpen={this.state.isModalOpen}
+          onRequestClose={this.handleOnCloseDialog}
+          start={this.state.targetTaskStart}
+          end={this.state.targetTaskEnd}
+          title={this.state.targetTaskTitle}
+          onChangeSchedule={this.scheduleTask}/>
       </div>
-    )
+    );
   }
 }
 

@@ -26,7 +26,7 @@ export default class DailyScheduleService {
       .catch((error) => error);
   }
 
-  updateSchedule(year, month, day, schedule_id, taskId, start_date, end_date) {
+  updateSchedule(year, month, day, schedule_id, taskId, start_date, end_date, completed = false) {
     let start = this.convertTimeFromString(year, month - 1, day, start_date);
     let end = this.convertTimeFromString(year, month - 1, day, end_date);
 
@@ -34,7 +34,8 @@ export default class DailyScheduleService {
       start_date: start,
       end_date: end,
       ticket_id: taskId,
-      schedule_id: schedule_id
+      schedule_id: schedule_id,
+      completed: completed,
     }
 
     return axios.patch(domain + `daily_task/${year}/${month}/${day}`, params, {headers: authHeader()})

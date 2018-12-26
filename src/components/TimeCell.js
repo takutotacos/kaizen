@@ -13,8 +13,17 @@ export default class TimeCell extends React.Component {
   constructor(props) {
     super(props);
 
+    this.handleOnCompletedClick = this.handleOnCompletedClick.bind(this);
     this.handleOnDeleteClick = this.handleOnDeleteClick.bind(this);
     this.handleOnEditClick = this.handleOnEditClick.bind(this);
+  }
+
+  handleOnCompletedClick() {
+    if (!this.props.isOccupied) {
+      return;
+    }
+
+    this.props.onCompletedClick(this.props);
   }
 
   handleOnEditClick() {
@@ -34,11 +43,19 @@ export default class TimeCell extends React.Component {
   }
 
   render() {
-    let {isOccupied, startIndex, isEnd, index, title} = this.props;
+    let {isOccupied, startIndex, isEnd, index, title, isCompleted} = this.props;
 
     let oneHourChunk = index % 4 === 3;
     let borderLine = oneHourChunk ? '1px black solid' : '';
-    let backgroundColor = isOccupied ? 'beige' : 'blue';
+
+    let backgroundColor = 'blue';
+    if (isOccupied) {
+      backgroundColor = 'beige';
+
+      if (isCompleted) {
+        backgroundColor = 'grey';
+      }
+    }
     let isStartCell = startIndex === index;
 
     // when occupied, only the end cell needs border line
@@ -80,7 +97,7 @@ export default class TimeCell extends React.Component {
         >
           <img
             src={logoDone}
-            onClick={this.handleOnEditClick}
+            onClick={this.handleOnCompletedClick}
             style={{
               width: '20px',
               height: '20px'
@@ -139,8 +156,10 @@ TimeCell.propTypes = {
   startIndex: PropTypes.number, // index of the start cell
   isEnd: PropTypes.bool, // index of the start cell
   title: PropTypes.string.isRequired,
+  isCompleted: PropTypes.bool.isRequired,
 
   onEditClick: PropTypes.func.isRequired,
   onDeleteClick: PropTypes.func.isRequired,
+  onCompletedClick: PropTypes.func.isRequired,
 };
 
